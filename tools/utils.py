@@ -3,7 +3,7 @@ This file is a part of My-PyChess application.
 In this file, we define a few general utilities for My-PyChess.
 '''
 
-import time
+# import time
 
 import pygame
 import pygame.gfxdraw
@@ -30,11 +30,11 @@ def _filled_rounded_rect(surf, color, rect, r):
 
 # A function to be used as a decorator to check execution time of a function
 # Used only while testing.
-def timeit(func):
-    def inner(*args, **kwargs):
-        start = time.perf_counter()
-        ret = func(*args, **kwargs)
-        end = time.perf_counter()
-        print("Time:", round((end-start)*1000, 4), "ms")
-        return ret
-    return inner
+# def timeit(func):
+#     def inner(*args, **kwargs):
+#         start = time.perf_counter()
+#         ret = func(*args, **kwargs)
+#         end = time.perf_counter()
+#         print("Time:", round((end-start)*1000, 4), "ms")
+#         return ret
+#     return inner

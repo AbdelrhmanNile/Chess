@@ -10,8 +10,8 @@ For a better understanding of the variables used here, checkout docs.txt
 from chess.lib import *
 
 # Run main code for chess singleplayer
-def main(win, player, load, movestr=""):
-    start(win, load)
+def main(win, player, movestr=""):
+    start(win)
 
     moves = movestr.split()
     side, board, flags = convertMoves(moves)
@@ -32,19 +32,18 @@ def main(win, player, load, movestr=""):
 
                 if 50 < x < 450 and 50 < y < 450:
                     x, y = x // 50, y // 50
-                    if load["flip"] and player:
-                        x, y = 9 - x, 9 - y
+                    # if load["flip"] and player:
+                    #     x, y = 9 - x, 9 - y
 
-                    if isOccupied(side, board, [x, y]):
-                        sound.play_click(load)
+                    # if isOccupied(side, board, [x, y]):
+                    #     sound.play_click(load)
 
                     prevsel = sel
                     sel = [x, y]
 
-                    if (side == player
-                        and isValidMove(side, board, flags, prevsel, sel)):
+                    if (side == player and isValidMove(side, board, flags, prevsel, sel)):
                         promote = getPromote(win, side, board, prevsel, sel)
-                        animate(win, side, board, prevsel, sel, load, player)
+                        animate(win, side, board, prevsel, sel, player)
 
                         side, board, flags = makeMove(
                             side, board, prevsel, sel, flags, promote)
@@ -53,18 +52,18 @@ def main(win, player, load, movestr=""):
                 elif side == player or end:
                     sel = [0, 0]
                     if 350 < x < 500 and 460 < y < 490:
-                        if prompt(win, saveGame(moves, "mysingle", player)):
+                        if prompt(win):
                             return 1
-                    elif 0 < x < 80 and 0 < y < 50 and load["allow_undo"]:
+                    elif 0 < x < 80 and 0 < y < 50:
                         moves = undo(moves, 2) if side == player else undo(moves)
                         side, board, flags = convertMoves(moves)
 
-        showScreen(win, side, board, flags, sel, load, player)
+        showScreen(win, side, board, flags, sel, player)
         
         end = isEnd(side, board, flags)
         if side != player and not end:
             fro, to = miniMax(side, board, flags)
-            animate(win, side, board, fro, to, load, player)
+            animate(win, side, board, fro, to, player)
 
             promote = getPromote(win, side, board, fro, to, True)
             side, board, flags = makeMove(side, board, fro, to, flags)

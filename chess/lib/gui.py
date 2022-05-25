@@ -5,7 +5,7 @@ In this file, we define some basic gui-related functions
 For a better understanding of the variables used here, checkout docs.txt
 """
 import pygame
-from tools.loader import CHESS, BACK, putNum, putLargeNum
+from tools.loader import CHESS, BACK, putNum
 from tools import sound
 
 # Apply 'convert_alpha()' on all pieces to optimise images for speed.
@@ -36,42 +36,42 @@ def getChoice(win, side):
                     elif 400 < event.pos[0] < 450:
                         return "n"
 
-def showTimeOver(win, side):
-    pygame.draw.rect(win, (0, 0, 0), (100, 190, 300, 120))
-    pygame.draw.rect(win, (255, 255, 255), (100, 190, 300, 120), 4)
+# def showTimeOver(win, side):
+#     pygame.draw.rect(win, (0, 0, 0), (100, 190, 300, 120))
+#     pygame.draw.rect(win, (255, 255, 255), (100, 190, 300, 120), 4)
     
-    win.blit(CHESS.TIMEUP[0], (220, 200))
-    win.blit(CHESS.TIMEUP[1], (105, 220))
-    win.blit(CHESS.TIMEUP[2], (115, 240))
+#     win.blit(CHESS.TIMEUP[0], (220, 200))
+#     win.blit(CHESS.TIMEUP[1], (105, 220))
+#     win.blit(CHESS.TIMEUP[2], (115, 240))
     
-    win.blit(CHESS.OK, (230, 270))
-    pygame.draw.rect(win, (255, 255, 255), (225, 270, 50, 30), 2)
+#     win.blit(CHESS.OK, (230, 270))
+#     pygame.draw.rect(win, (255, 255, 255), (225, 270, 50, 30), 2)
     
-    pygame.display.update()
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if 225 < event.pos[0] < 275 and 270 < event.pos[1] < 300:
-                    return
+#     pygame.display.update()
+#     while True:
+#         for event in pygame.event.get():
+#             if event.type == pygame.MOUSEBUTTONDOWN:
+#                 if 225 < event.pos[0] < 275 and 270 < event.pos[1] < 300:
+#                     return
 
-def putClock(win, timer):
-    if timer is None:
-        return
+# def putClock(win, timer):
+#     if timer is None:
+#         return
     
-    m1, s1 = divmod(timer[0] // 1000, 60)
-    m2, s2 = divmod(timer[1] // 1000, 60)
+#     m1, s1 = divmod(timer[0] // 1000, 60)
+#     m2, s2 = divmod(timer[1] // 1000, 60)
     
-    putLargeNum(win, format(m1, "02"), (100, 460), False)
-    win.blit(CHESS.COL, (130, 460))
-    putLargeNum(win, format(s1, "02"), (140, 460), False)
-    putLargeNum(win, format(m2, "02"), (210, 460), False)
-    win.blit(CHESS.COL, (240, 460))
-    putLargeNum(win, format(s2, "02"), (250, 460), False)
+#     putLargeNum(win, format(m1, "02"), (100, 460), False)
+#     win.blit(CHESS.COL, (130, 460))
+#     putLargeNum(win, format(s1, "02"), (140, 460), False)
+#     putLargeNum(win, format(m2, "02"), (210, 460), False)
+#     win.blit(CHESS.COL, (240, 460))
+#     putLargeNum(win, format(s2, "02"), (250, 460), False)
     
-    win.blit(CHESS.PIECES[0]["k"], (50, 450))
-    win.blit(CHESS.PIECES[1]["k"], (278, 450))
+#     win.blit(CHESS.PIECES[0]["k"], (50, 450))
+#     win.blit(CHESS.PIECES[1]["k"], (278, 450))
     
-    pygame.display.update()
+#     pygame.display.update()
 
 # This function draws the board
 def drawBoard(win):
@@ -83,11 +83,11 @@ def drawBoard(win):
                 pygame.draw.rect(win, (220, 240, 240), (50 * x, 50 * y, 50, 50))
                 
 # This funtion draws all pieces onto the board
-def drawPieces(win, board, flip):
+def drawPieces(win, board):
     for side in range(2):
         for x, y, ptype in board[side]:
-            if flip:
-                x, y = 9 - x, 9 - y
+            # if flip:
+            #     x, y = 9 - x, 9 - y
             win.blit(CHESS.PIECES[side][ptype], (x * 50, y * 50))
 
 # This function displays the prompt screen when a user tries to quit
@@ -107,18 +107,18 @@ def prompt(win, msg=None):
         win.blit(CHESS.MESSAGE[0], (130, 160))
         win.blit(CHESS.MESSAGE[1], (190, 190))
 
-    elif msg == -1:
-        win.blit(CHESS.MESSAGE[0], (130, 160))
-        win.blit(CHESS.MESSAGE[1], (190, 190))
+    # elif msg == -1:
+    #     win.blit(CHESS.MESSAGE[0], (130, 160))
+    #     win.blit(CHESS.MESSAGE[1], (190, 190))
         
-        win.blit(CHESS.SAVE_ERR, (115, 270))
+    #     win.blit(CHESS.SAVE_ERR, (115, 270))
         
-    else:
-        win.blit(CHESS.MESSAGE2[0], (123, 160))
-        win.blit(CHESS.MESSAGE2[1], (145, 190))
+    # else:
+    #     win.blit(CHESS.MESSAGE2[0], (123, 160))
+    #     win.blit(CHESS.MESSAGE2[1], (145, 190))
         
-        win.blit(CHESS.MSG, (135, 270))
-        putNum(win, msg, (345, 270))
+    #     win.blit(CHESS.MSG, (135, 270))
+    #     putNum(win, msg, (345, 270))
 
     pygame.display.flip()
     while True:
@@ -132,14 +132,15 @@ def prompt(win, msg=None):
 
 # This function shows a small animation when the game starts, while also
 # optimising images for display - call only once per game
-def start(win, load):
+def start(win):
     convertPieces(win)
-    sound.play_start(load)
+    # sound.play_start(load)
     clk = pygame.time.Clock()
     for i in range(101):
         clk.tick_busy_loop(140)
         drawBoard(win)
         
+        # TODO: Remove animation, try to draw each piece in its place immedietely
         for j in range(8):
             win.blit(CHESS.PIECES[0]["p"], (0.5 * i * (j + 1), 225 + 1.25 * i))
             win.blit(CHESS.PIECES[1]["p"], (0.5 * i * (j + 1), 225 - 1.25 * i))

@@ -9,21 +9,22 @@ import platform
 
 import pygame
 from ext.pyFish import teststockfish
-from tools.loader import STOCKFISH, BACK, putLargeNum
+from tools.loader import STOCKFISH
+from tools.loader import BACK, putLargeNum
 from tools.utils import rounded_rect
 
 # This shows a popup on screen wether stockfish is configured or not.
 def install(win, pth):
     pygame.draw.rect(win, (0, 0, 0), (100, 200, 300, 100))
     pygame.draw.rect(win, (255, 255, 255), (100, 200, 300, 100), 4)
-    win.blit(STOCKFISH.LOADING, (100, 200))
+    # win.blit(STOCKFISH.LOADING, (100, 200))
     pygame.display.update()
 
     pygame.draw.rect(win, (0, 0, 0), (100, 200, 300, 100))
     pygame.draw.rect(win, (255, 255, 255), (100, 200, 300, 100), 4)
 
     pygame.draw.rect(win, (255, 255, 255), (220, 270, 65, 20), 2)
-    win.blit(STOCKFISH.BACK, (220, 270))
+    # win.blit(STOCKFISH.BACK, (220, 270))
 
     active = teststockfish(pth)
     if active:

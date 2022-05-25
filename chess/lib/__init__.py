@@ -27,8 +27,8 @@ from chess.lib.gui import (
     BACK,
     sound,
     getChoice,
-    showTimeOver,
-    putClock,
+    # showTimeOver,
+    # putClock,
     drawBoard,
     drawPieces,
     prompt,
@@ -39,11 +39,11 @@ from chess.lib.utils import (
     decode,
     initBoardVars,
     undo,
-    getSFpath,
-    rmSFpath,
-    getTime,
-    updateTimer,
-    saveGame,
+    # getSFpath,
+    # rmSFpath,
+    # getTime,
+    # updateTimer,
+    # saveGame,
 )
 from chess.lib.ai import miniMax
 
@@ -64,56 +64,56 @@ def convertMoves(moves):
 def getPromote(win, side, board, fro, to, single=False):
     if getType(side, board, fro) == "p":
         if (side == 0 and to[1] == 1) or (side == 1 and to[1] == 8):
-            if single:
-                return "q"
-            else:
-                return getChoice(win, side)
+            # if single:
+            return "q"
+            # else:
+            #     return getChoice(win, side)
 
-def showClock(win, side, mode, timer, start, timedelta):
-    if timer is None:
-        pygame.display.update()
-        return None
+# def showClock(win, side, mode, timer, start, timedelta):
+#     if timer is None:
+#         pygame.display.update()
+#         return None
     
-    ret = list(timer)
-    elaptime = getTime() - (start + timedelta)
-    if mode == -1:
-        ret[side] += elaptime
-        if ret[side] >= 3600000:
-            ret[side] = 3599000
+#     ret = list(timer)
+#     elaptime = getTime() - (start + timedelta)
+#     if mode == -1:
+#         ret[side] += elaptime
+#         if ret[side] >= 3600000:
+#             ret[side] = 3599000
             
-    else:
-        ret[side] -= elaptime
-        if ret[side] < 0:
-            showTimeOver(win, side)
-            return None
+#     else:
+#         ret[side] -= elaptime
+#         if ret[side] < 0:
+#             showTimeOver(win, side)
+#             return None
     
-    putClock(win, ret)
-    return ret
+#     putClock(win, ret)
+#     return ret
 
 # This is a gui function that draws green squares marking the legal moves of
 # a seleced piece.
-def showAvailMoves(win, side, board, pos, flags, flip):
+def showAvailMoves(win, side, board, pos, flags):
     piece = pos + [getType(side, board, pos)]
     for i in availableMoves(side, board, piece, flags):
-        x = 470 - i[0] * 50 if flip else i[0] * 50 + 20
-        y = 470 - i[1] * 50 if flip else i[1] * 50 + 20
+        x = i[0] * 50 + 20
+        y = i[1] * 50 + 20
         pygame.draw.rect(win, (0, 255, 0), (x, y, 10, 10))
 
 # This function makes a gentle animation of a piece that is getting moved.
 # This function needs to be called BEFORE the actual move takes place
-def animate(win, side, board, fro, to, load, player=None):
-    sound.play_drag(load)
-    if player is None:
-        FLIP = side and load["flip"]
-    else:
-        FLIP = player and load["flip"]
+def animate(win, side, board, fro, to, player=None):
+    # sound.play_drag(load)
+    # if player is None:
+    #     FLIP = side and load["flip"]
+    # else:
+    #     FLIP = player and load["flip"]
         
     piece = CHESS.PIECES[side][getType(side, board, fro)]
     x1, y1 = fro[0] * 50, fro[1] * 50
     x2, y2 = to[0] * 50, to[1] * 50
-    if FLIP:
-        x1, y1 = 450 - x1, 450 - y1
-        x2, y2 = 450 - x2, 450 - y2
+    # if FLIP:
+    #     x1, y1 = 450 - x1, 450 - y1
+    #     x2, y2 = 450 - x2, 450 - y2
 
     stepx = (x2 - x1) / 50
     stepy = (y2 - y1) / 50
@@ -124,34 +124,34 @@ def animate(win, side, board, fro, to, load, player=None):
     for i in range(51):
         clk.tick_busy_loop(100)
         drawBoard(win)
-        drawPieces(win, board, FLIP)
+        drawPieces(win, board)
 
         pygame.draw.rect(win, col, (x1, y1, 50, 50))
         win.blit(piece, (x1 + (i * stepx), y1 + (i * stepy)))
         pygame.display.update()
-    sound.play_move(load)
+    # sound.play_move(load)
 
 # This is a compilation of all gui functions. This handles the display of the
 # screen when chess gameplay takes place. This tool needs to be called
 # everytime in the game loop.
-def showScreen(win, side, board, flags, pos, load, player=None, online=False):
-    multi = False
+def showScreen(win, side, board, flags, pos, player=None, online=False):
+    # multi = False
     if player is None:
-        multi = True
+        # multi = True
         player = side
 
-    flip = load["flip"] and player
+    # flip = load["flip"] and player
 
     drawBoard(win)
     win.blit(BACK, (460, 0))
     
-    if not multi:
-        win.blit(CHESS.TURN[int(side == player)], (10, 460))
+    # if not multi:
+    win.blit(CHESS.TURN[int(side == player)], (10, 460))
         
-    if not online:
-        if load["allow_undo"]:
-            win.blit(CHESS.UNDO, (10, 12))
-        win.blit(CHESS.SAVE, (350, 462))
+    # if not online:
+    # if load["allow_undo"]:
+    win.blit(CHESS.UNDO, (10, 12))
+        # win.blit(CHESS.SAVE, (350, 462))
 
     if isEnd(side, board, flags):
         if isChecked(side, board):
@@ -161,21 +161,22 @@ def showScreen(win, side, board, flags, pos, load, player=None, online=False):
         else:
             win.blit(CHESS.STALEMATE, (160, 12))
     else:
-        if online:
-            win.blit(CHESS.DRAW, (10, 12))
-            win.blit(CHESS.RESIGN, (400, 462))
+        # if online:
+        #     win.blit(CHESS.DRAW, (10, 12))
+        #     win.blit(CHESS.RESIGN, (400, 462))
             
         if isChecked(side, board):
             win.blit(CHESS.CHECK, (200, 12))
 
+        # Highlights a piece's square when you click on an allied piece during your turn.
         if isOccupied(side, board, pos) and side == player:
-            x = (9 - pos[0]) * 50 if flip else pos[0] * 50
-            y = (9 - pos[1]) * 50 if flip else pos[1] * 50
+            x = pos[0] * 50
+            y = pos[1] * 50
             pygame.draw.rect(win, (255, 255, 0), (x, y, 50, 50))
 
-    drawPieces(win, board, flip)
-    if load["show_moves"] and side == player:
-        showAvailMoves(win, side, board, pos, flags, flip)
+    drawPieces(win, board)
+    if side == player:
+        showAvailMoves(win, side, board, pos, flags)
         
-    if not multi:
-        pygame.display.update()
+    # if not multi:
+    pygame.display.update()
