@@ -3,9 +3,6 @@ This file is a part of My-PyChess application.
 In this file, we define a few other non-gui My-PyChess helper functions.
 """
 
-# from datetime import datetime
-# import os
-# import time
 
 LETTER = ["", "a", "b", "c", "d", "e", "f", "g", "h"]
 
@@ -58,66 +55,3 @@ def undo(moves, num=1):
     else:
         return moves[:-num]
     
-# Get path to stockfish executable from path.txt config file
-# def getSFpath():
-#     conffile = os.path.join("res", "stockfish", "path.txt")
-#     if os.path.exists(conffile):
-#         with open(conffile, "r") as f:
-#             return f.read().strip()
-
-# Remove stockfish config path file.
-# def rmSFpath():
-#     os.remove(os.path.join("res", "stockfish", "path.txt"))
-
-# Get time returned by time perf_counter in rounded millisconds
-# def getTime():
-#     return round(time.perf_counter() * 1000)
-
-# # Update the game-timer after each move
-# def updateTimer(side, mode, timer):
-#     if timer is None:
-#         return None
-    
-#     ret = list(timer)
-#     if mode != -1:
-#         ret[side] += (mode * 1000)
-#     return ret
-
-# This function saves a game into a text file.
-# It does this by saving all moves in long algebraic notation
-# Also saves other important data in the file depending on the gamemode.
-# def saveGame(moves, gametype="multi", player=0, level=0,
-#              mode=None, timer=None, cnt=0):
-#     if cnt >= 20:
-#         return -1
-
-#     name = os.path.join("res", "savedGames", "game" + str(cnt) + ".txt")
-#     if os.path.isfile(name):
-#         return saveGame(moves, gametype, player, level, mode, timer, cnt + 1)
-    
-#     else:
-#         if gametype == "single":
-#             gametype += " " + str(player) + " " + str(level)
-#         if gametype == "mysingle":
-#             gametype += " " + str(player)
-
-#         dt = datetime.now()
-#         date = "/".join(map(str, [dt.day, dt.month, dt.year]))
-#         time = ":".join(map(str, [dt.hour, dt.minute, dt.second]))
-#         datentime = " ".join([date, time])
-
-#         movestr = " ".join(moves)
-        
-#         temp = []
-#         if mode is not None:
-#             temp.append(str(mode))
-        
-#             if timer is not None:
-#                 temp.extend(map(str, timer))
-            
-#         temp = " ".join(temp)
-#         text = "\n".join([gametype, datentime, movestr, temp])
-              
-#         with open(name, "w") as file:
-#             file.write(text)
-#         return cnt

@@ -10,6 +10,8 @@ For a better understanding of the variables used here, checkout docs.txt
 from chess.lib import *
 
 # Run main code for chess singleplayer
+
+
 def main(win, player, movestr=""):
     start(win)
 
@@ -24,7 +26,7 @@ def main(win, player, movestr=""):
         for event in pygame.event.get():
             if event.type == pygame.QUIT and prompt(win):
                 return 0
-            
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 if 460 < x < 500 and 0 < y < 50 and prompt(win):
@@ -34,9 +36,6 @@ def main(win, player, movestr=""):
                     x, y = x // 50, y // 50
                     # if load["flip"] and player:
                     #     x, y = 9 - x, 9 - y
-
-                    # if isOccupied(side, board, [x, y]):
-                    #     sound.play_click(load)
 
                     prevsel = sel
                     sel = [x, y]
@@ -55,11 +54,12 @@ def main(win, player, movestr=""):
                         if prompt(win):
                             return 1
                     elif 0 < x < 80 and 0 < y < 50:
-                        moves = undo(moves, 2) if side == player else undo(moves)
+                        moves = undo(
+                            moves, 2) if side == player else undo(moves)
                         side, board, flags = convertMoves(moves)
 
         showScreen(win, side, board, flags, sel, player)
-        
+
         end = isEnd(side, board, flags)
         if side != player and not end:
             fro, to = miniMax(side, board, flags)

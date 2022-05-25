@@ -21,7 +21,6 @@ Some other variables are
 
 1. win -> The pygame window object.
 2. sel/prevsel/pos -> This is a pair of coordinates. example: [1, 2], [3, 5] etc..
-3. prefs/load -> A dictionary containing user preferences.
 
 The coordinate system used across this game is similar to the system used by
 pygame.

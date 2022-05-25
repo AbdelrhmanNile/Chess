@@ -11,6 +11,7 @@ on the screen and display date and time are also defined here
 import os.path
 import pygame
 
+
 # Initialize pygame.font module and load the font file.
 pygame.font.init()
 FONT = os.path.join("res", "Asimov.otf")
@@ -56,7 +57,7 @@ BGSPRITE = pygame.image.load(os.path.join("res", "img", "bgsprites.jpg"))
 PSPRITE = pygame.image.load(os.path.join("res", "img", "piecesprite.png"))
 
 # Load global image for back
-BACK = pygame.image.load(os.path.join("res", "img", "back.png"))
+BACK = pygame.image.load(os.path.join("res", "img", "bk1.png"))
 
 
 class CHESS:
