@@ -1,15 +1,7 @@
 """
-This file is a part of My-PyChess application.
-
-Used like:
->>> from chess.lib import *
-
 In this file, we import all the useful functions for chess from the
-respective modules, and call it the "My-PyChess Standard Chess Library".
-Some functions that need utility of other functions from various other modules
+respective modules. Some functions that need utility of other functions from various other modules
 are defined here.
-
-For a better understanding of the variables used here, checkout docs.txt
 """
 
 from chess.lib.core import (
@@ -24,106 +16,71 @@ from chess.lib.core import (
 from chess.lib.gui import (
     pygame,
     CHESS,
-    BACK,
-    sound,
-    getChoice,
     drawBoard,
     drawPieces,
     prompt,
     start,
 )
 from chess.lib.utils import (
-    encode,
-    decode,
     initBoardVars,
     undo,
 )
 from chess.lib.ai import miniMax
+from tools import colors
+from tools.loader import BACK
 
-# This function converts a string of moves(move sequence) of standard notation
-# into the notation used by the game.
-
-
-def convertMoves(moves):
-    side, board, flags = initBoardVars()
-
-    for fro, to, promote in map(decode, moves):
-        side, board, flags = makeMove(side, board, fro, to, flags, promote)
-
-    return side, board, flags
-
-# This is a wrapper for the getChoice GUI function.
-# getPromote() first checks wether a pawn has reaches promotion state
-# Then, if the game is multiplayer, getPromote() returns getChoice()
-# Returns queen otherwise
-
-
-def getPromote(win, side, board, fro, to, single=False):
-    if getType(side, board, fro) == "p":
-        if (side == 0 and to[1] == 1) or (side == 1 and to[1] == 8):
-            return "q"
 
 # This is a gui function that draws green squares marking the legal moves of
 # a seleced piece.
-
-
 def showAvailMoves(win, side, board, pos, flags):
     piece = pos + [getType(side, board, pos)]
     for i in availableMoves(side, board, piece, flags):
         x = i[0] * 50 + 20
         y = i[1] * 50 + 20
-        pygame.draw.rect(win, (0, 255, 0), (x, y, 10, 10))
+        pygame.draw.rect(win, colors.GREEN, (x, y, 10, 10))
+
 
 # This function makes a gentle animation of a piece that is getting moved.
 # This function needs to be called BEFORE the actual move takes place
-
-
-def animate(win, side, board, fro, to, player=None):
-    # if player is None:
-    #     FLIP = side and load["flip"]
-    # else:
-    #     FLIP = player and load["flip"]
+def animate(win, side, board, fro, to):
 
     piece = CHESS.PIECES[side][getType(side, board, fro)]
     x1, y1 = fro[0] * 50, fro[1] * 50
     x2, y2 = to[0] * 50, to[1] * 50
-    # if FLIP:
-    #     x1, y1 = 450 - x1, 450 - y1
-    #     x2, y2 = 450 - x2, 450 - y2
 
     stepx = (x2 - x1) / 50
     stepy = (y2 - y1) / 50
 
-    col = (180, 100, 30) if (fro[0] + fro[1]) % 2 else (220, 240, 240)
+    col = colors.ORANGE if (fro[0] + fro[1]) % 2 else colors.GREY2
 
     clk = pygame.time.Clock()
     for i in range(51):
         clk.tick_busy_loop(100)
         drawBoard(win)
         drawPieces(win, board)
-
         pygame.draw.rect(win, col, (x1, y1, 50, 50))
         win.blit(piece, (x1 + (i * stepx), y1 + (i * stepy)))
         pygame.display.update()
+
 
 # This is a compilation of all gui functions. This handles the display of the
 # screen when chess gameplay takes place. This tool needs to be called
 # everytime in the game loop.
 
-
-def showScreen(win, side, board, flags, pos, player=None, online=False):
-    if player is None:
-        player = side
-
-    # flip = load["flip"] and player
+def showScreen(win, side, board, flags, pos, player):
 
     drawBoard(win)
-    win.blit(BACK, (460, 0))
 
+    # Back button.
+    win.blit(BACK, (455, 0))
+
+    # Turn text.
     win.blit(CHESS.TURN[int(side == player)], (10, 460))
 
+    # Undo Button.
     win.blit(CHESS.UNDO, (10, 12))
 
+    # Display result of the game.
     if isEnd(side, board, flags):
         if isChecked(side, board):
             win.blit(CHESS.CHECKMATE, (100, 12))
@@ -132,6 +89,8 @@ def showScreen(win, side, board, flags, pos, player=None, online=False):
         else:
             win.blit(CHESS.STALEMATE, (160, 12))
     else:
+
+        # King check text.
         if isChecked(side, board):
             win.blit(CHESS.CHECK, (200, 12))
 
@@ -139,11 +98,10 @@ def showScreen(win, side, board, flags, pos, player=None, online=False):
         if isOccupied(side, board, pos) and side == player:
             x = pos[0] * 50
             y = pos[1] * 50
-            pygame.draw.rect(win, (255, 255, 0), (x, y, 50, 50))
+            pygame.draw.rect(win, colors.YELLOW, (x, y, 50, 50))
 
     drawPieces(win, board)
     if side == player:
         showAvailMoves(win, side, board, pos, flags)
 
-    # if not multi:
     pygame.display.update()

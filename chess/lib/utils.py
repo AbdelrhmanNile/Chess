@@ -1,35 +1,14 @@
 """
-This file is a part of My-PyChess application.
 In this file, we define a few other non-gui My-PyChess helper functions.
 """
 
 
-LETTER = ["", "a", "b", "c", "d", "e", "f", "g", "h"]
+from chess.lib.core import makeMove
 
-# encode() essentially converts a form of data used by the game to denote moves
-# into the standard full algebraic notation (the kind that is used to
-# communicate with a chess engine).
-# To know more about the data format used by this game, checkout docs.txt
-def encode(fro, to, promote=None):
-    data = LETTER[fro[0]] + str(9 - fro[1]) + LETTER[to[0]] + str(9 - to[1])
-    if promote is not None:
-        return data + promote
-    return data
 
-# decode does the opposite of encode()
-def decode(data):
-    ret = [
-        [LETTER.index(data[0]), 9 - int(data[1])],
-        [LETTER.index(data[2]), 9 - int(data[3])],
-    ]
-    if len(data) == 5:
-        ret.append(data[4])
-    else:
-        ret.append(None)
-    return ret    
-    
 # Return the initial state (in which a chess game starts) of the chess variables
 # side, board and flags
+
 def initBoardVars():
     side = False
     board = [
@@ -47,11 +26,13 @@ def initBoardVars():
     ]
     flags = [[True for _ in range(4)], None]
     return side, board, flags
-    
-# A simple function to undo, num corresponds to the number of moves to undo.
-def undo(moves, num=1):
-    if len(moves) in range(num):
-        return moves
-    else:
-        return moves[:-num]
-    
+
+
+# Undo your last move. (Re-do all moves from the start up until your last move.)
+
+def undo(moves):
+    side, board, flags = initBoardVars()
+    moves = moves[:-2]
+    for fro, to in moves:
+        side, board, flags = makeMove(side, board, fro, to, flags)
+    return side, board, flags, moves

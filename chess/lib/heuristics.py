@@ -1,5 +1,4 @@
 """
-This file is a part of My-PyChess application.
 In this file, we define heuristic constants required for the python chess
 engine.
 """

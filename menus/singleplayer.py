@@ -1,62 +1,83 @@
 '''
-This file is a part of My-PyChess application.
 In this file, we manage the single player menu which is called when user clicks
-singleplayer button on main menu.
+play button on main menu.
 '''
 
 import random
 import pygame
+from tools import colors
 from tools.loader import SINGLE, BACK
-from tools.utils import rounded_rect
 
-# TODO: Change all rounded rect to normal rect.
 
 # This shows the screen
+def showScreen(win, select):
 
-
-def showScreen(win, sel, sel2, lvl):
+    # Fill background with black.
     win.fill((0, 0, 0))
 
-    rounded_rect(win, (255, 255, 255), (70, 5, 340, 60), 15, 4)
+    # Draw header with rectangle around it.
+    pygame.draw.rect(win, colors.WHITE, (70, 5, 340, 70), 3)
     win.blit(SINGLE.HEAD, (100, 7))
-    win.blit(BACK, (460, 0))
 
-    rounded_rect(win, (255, 255, 255), (10, 70, 480, 180), 12, 4)
-    for cnt, i in enumerate(SINGLE.PARA1):
-        y = 75 + cnt * 17
-        win.blit(i, (20, y))
-    win.blit(SINGLE.CHOOSE, (90, 160))
-    win.blit(SINGLE.SELECT, (200, 150))
-    pygame.draw.rect(win, (50, 100, 150), (200 + sel*50, 150, 50, 50), 3)
+    # Draw back button.
+    win.blit(BACK, (455, 0))
 
-    rounded_rect(win, (255, 255, 255), (170, 210, 140, 30), 7, 3)
-    win.blit(SINGLE.START, (170, 210))
+    # Draw box around all upcoming text.
+    pygame.draw.rect(win, colors.WHITE, (10, 150, 480, 200), 3)
+
+    # Draw each line from the text on a seperate line.
+    for line, txt in enumerate(SINGLE.PARA1):
+        y = 155 + line * 17
+        win.blit(txt, (20, y))
+
+    # Draw choose + selection pieces.
+    win.blit(SINGLE.CHOOSE, (90, 240))
+    win.blit(SINGLE.SELECT, (200, 230))
+
+    # Draw box around selection.
+    pygame.draw.rect(win, colors.PURPLE, (200 + select*50, 230, 50, 50), 3)
+
+    # Draw start button with rectangle around it.
+    pygame.draw.rect(win, colors.WHITE, (162, 300, 150, 40), 3)
+    win.blit(SINGLE.START, (170, 302))
+
 
 # This is the main function, called from main menu
-
-
 def main(win):
-    sel = sel2 = 0
-    lvl = 1
+
+    # Variable used for storing user's side choice.
+    select = 0
     clock = pygame.time.Clock()
     while True:
         clock.tick(24)
-        showScreen(win, sel, sel2, lvl)
+        showScreen(win, select)
+
+        # Get user input
         for event in pygame.event.get():
+
+            # If user decides to quit the program, return 0 to main menu to indicate the quiting.
             if event.type == pygame.QUIT:
                 return 0
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
-                if 460 < x < 500 and 0 < y < 50:
+
+                # User clicked on back
+                if 455 < x < 495 and 0 < y < 40:
                     return 1
 
-                if 160 < y < 210 and 200 < x < 350:
-                    sel = (x // 50) - 4
+                # User clicked on one of the selection pieces. Store their choice.
+                if 230 < y < 280 and 200 < x < 350:
+                    select = (x // 50) - 4
 
-                if 170 < x < 310 and 220 < y < 250:
-                    if sel == 2:
+                # User clicked on start game.
+                if 170 < x < 310 and 300 < y < 340:
+                    
+                    # Returning true to main menu indicates user clicked on start game button.
+                    if select == 2:
                         return True, random.randint(0, 1)
                     else:
-                        return True, sel
-
+                        return True, select
+                        
+        # Update the screen every frame
         pygame.display.update()

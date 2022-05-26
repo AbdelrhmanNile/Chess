@@ -1,8 +1,8 @@
 """
-This file is a part of My-PyChess application.
 In this file, we implement a basic chess player algorithm in python.
 
 This implementation is a weak player of chess.
+
 This algorithm is not fast or efficient as any C impemenation of the same,
 just an attempt to display the workings of the minimax algorithm with
 alpha-beta pruning in Python.
@@ -12,12 +12,12 @@ from chess.lib.core import legalMoves, makeMove
 from chess.lib.heuristics import *
 
 INF = 1000000
-DEPTH = 2
+DEPTH = 3
+
 
 # This is a rudementary and simple evaluative function for a given state of
 # board. It gives each piece a value based on its position on the board,
 # returns a numeric representation of the board
-
 
 def evaluate(board):
     score = 0
@@ -51,8 +51,9 @@ def evaluate(board):
 
     return score
 
-# This is the Mini-Max algorithm, implemented with alpha-beta pruning.
 
+# This is the Mini-Max algorithm, implemented with alpha-beta pruning.
+# White is max, black is min.
 
 def miniMax(side, board, flags, depth=DEPTH, alpha=-INF, beta=INF):
     if depth == 0:
