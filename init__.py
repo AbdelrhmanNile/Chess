@@ -4,7 +4,7 @@ respective modules. Some functions that need utility of other functions from var
 are defined here.
 """
 
-from chess.lib.core import (
+from core import (
     getType,
     isOccupied,
     isChecked,
@@ -13,7 +13,7 @@ from chess.lib.core import (
     availableMoves,
     makeMove,
 )
-from chess.lib.gui import (
+from gui import (
     pygame,
     CHESS,
     drawBoard,
@@ -21,13 +21,13 @@ from chess.lib.gui import (
     prompt,
     start,
 )
-from chess.lib.utils import (
+from utils import (
     initBoardVars,
     undo,
 )
-from chess.lib.ai import miniMax
-from tools import colors
-from tools.loader import BACK
+from ai import miniMax
+import colors
+from loader import BACK
 
 
 # This is a gui function that draws green squares marking the legal moves of

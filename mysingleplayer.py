@@ -7,6 +7,8 @@ from core import *
 from gui import *
 from heuristics import *
 from utils import *
+from init__ import *
+
 
 
 # Run main code for chess singleplayer
