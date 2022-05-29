@@ -8,8 +8,8 @@ just an attempt to display the workings of the minimax algorithm with
 alpha-beta pruning in Python.
 """
 
-from chess.lib.core import legalMoves, makeMove
-from chess.lib.heuristics import *
+from core import legalMoves, makeMove
+from heuristics import *
 
 INF = 1000000
 DEPTH = 3

@@ -5,8 +5,8 @@ play button on main menu.
 
 import random
 import pygame
-from tools import colors
-from tools.loader import SINGLE, BACK
+import colors
+from loader import SINGLE, BACK
 
 
 # This shows the screen

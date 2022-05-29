@@ -2,7 +2,11 @@
 In this file, we manage the chess gameplay. 
 '''
 
-from chess.lib import *
+from ai import *
+from core import *
+from gui import *
+from heuristics import *
+from utils import *
 
 
 # Run main code for chess singleplayer

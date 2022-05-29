@@ -4,7 +4,7 @@ Loading and rendering all resources used across the project.
 
 import os.path
 import pygame
-from tools import colors
+import colors
 
 # Initialize pygame.font module and load the font file.
 pygame.font.init()

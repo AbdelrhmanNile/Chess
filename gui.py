@@ -2,8 +2,8 @@
 In this file, we define some basic gui-related functions
 """
 import pygame
-from tools.loader import CHESS
-from tools import colors
+from loader import CHESS
+import colors
 
 
 # Apply 'convert_alpha()' on all pieces to optimise images for speed.

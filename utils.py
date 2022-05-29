@@ -3,7 +3,7 @@ In this file, we define a few other non-gui My-PyChess helper functions.
 """
 
 
-from chess.lib.core import makeMove
+from core import makeMove
 
 
 # Return the initial state (in which a chess game starts) of the chess variables
