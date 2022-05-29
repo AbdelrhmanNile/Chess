@@ -2,10 +2,10 @@
 This is the main file of the program. It handles running and closing the window.
 """
 import pygame
-from chess.mysingleplayer import main as startGame
-from menus.singleplayer import main as splayermenu
-from tools.loader import MAIN
-from tools.sound import background
+from mysingleplayer import main as startGame
+from singleplayer import main as splayermenu
+from loader import MAIN
+from sound import background
 
 
 # Some initialisation
